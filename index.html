@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator by BAM</title>
+    <!-- Favicon / Browser Tab Logo -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    
     <style>
         :root {
             --page-bg: linear-gradient(135deg, #7bd3d0 0%, #4b7bec 100%);
@@ -448,22 +451,18 @@
         function evaluateSafe(expression) {
             if (!expression.trim()) return 0;
 
-            // Replace display symbols and convert % to division by 100
             let sanitized = expression
                 .replace(/×/g, '*')
                 .replace(/%/g, '/100');
 
-            // Strictly validate allowed characters (digits, math operations, decimals, spaces, and parentheses)
             if (/[^0-9+\-*/.() ]/.test(sanitized)) {
                 return 'Error';
             }
 
             try {
-                // Function execution in strict mode replaces dangerous eval()
                 const result = new Function(`'use strict'; return (${sanitized})`)();
                 
                 if (typeof result === 'number' && !isNaN(result) && isFinite(result)) {
-                    // Rounding to avoid floating point precision issues (e.g. 0.1 + 0.2 = 0.30000000000000004)
                     return Math.round(result * 1e10) / 1e10;
                 }
                 return 'Error';
